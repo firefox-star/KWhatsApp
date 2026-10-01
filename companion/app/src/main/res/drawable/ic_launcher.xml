@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher icon: green chat bubble with an AI spark -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path
+        android:fillColor="#25D366"
+        android:pathData="M24,4C12.9,4 4,12.4 4,22.8c0,5.9 2.9,11.2 7.5,14.7L11.5,44l7.1,-3.5c1.7,0.4 3.5,0.7 5.4,0.7c11.1,0 20,-8.4 20,-18.8S35.1,4 24,4z" />
+    <path
+        android:fillColor="#0E1116"
+        android:pathData="M23,14h2v9l6.4,6.4l-1.4,1.4L23,24V14z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M31.5,12l1.1,2.9l2.9,1.1l-2.9,1.1l-1.1,2.9l-1.1,-2.9l-2.9,-1.1l2.9,-1.1z" />
+</vector>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AI Reply for WhatsApp</string>
+    <string name="ai_settings">AI Settings</string>
+    <string name="debug_logs">Debug Logs</string>
+
+    <!-- Dashboard -->
+    <string name="dash_title">AI Reply Companion</string>
+    <string name="dash_subtitle">Works with the official WhatsApp app — no modification needed</string>
+    <string name="status_ai">AI suggestions</string>
+    <string name="status_access">Notification access</string>
+    <string name="status_config">AI configuration</string>
+    <string name="grant_access">Grant notification access</string>
+    <string name="open_settings">AI Settings</string>
+    <string name="test_ai">Test AI connection</string>
+    <string name="open_logs">View debug logs</string>
+    <string name="how_title">How it works</string>
+    <string name="how_1">1. Grant notification access (Android will ask)</string>
+    <string name="how_2">2. Add your AI API key in AI Settings (free tiers work — Groq, OpenRouter, Google Gemini)</string>
+    <string name="how_3">3. When a WhatsApp message arrives, a suggestion notification appears</string>
+    <string name="how_4">4. Tap Send to accept, Edit to change it, or swipe it away to ignore</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="granted">Granted</string>
+    <string name="not_granted">Not granted</string>
+    <string name="configured">Configured</string>
+    <string name="not_configured">Not configured</string>
+    <string name="notif_access_rationale">Android requires explicit permission to read message notifications. Tap the button, find "AI Reply for WhatsApp" in the list and enable it.</string>
+
+    <!-- Settings -->
+    <string name="s_enable">Enable AI suggestions</string>
+    <string name="s_enable_sub">Master switch — analyzes incoming WhatsApp messages</string>
+    <string name="s_auto_suggest">Analyze messages automatically</string>
+    <string name="s_auto_suggest_sub">Generate a suggestion for every incoming message</string>
+    <string name="s_auto_send">Auto-send without confirmation</string>
+    <string name="s_auto_send_sub">Experimental: sends the first suggestion immediately. Use with care.</string>
+    <string name="s_debug">Debug logging</string>
+    <string name="s_debug_sub">Record detailed API logs for troubleshooting</string>
+    <string name="s_base_url">AI API Base URL</string>
+    <string name="s_base_url_hint">https://api.groq.com/openai/v1</string>
+    <string name="s_base_url_sub">Any OpenAI-compatible endpoint or Google Gemini. HTTPS is required for remote APIs.</string>
+    <string name="s_model">AI Model Name</string>
+    <string name="s_model_hint">llama-3.1-8b-instant</string>
+    <string name="s_api_key">API Key / Auth Token</string>
+    <string name="s_api_key_hint">sk-...</string>
+    <string name="s_api_key_sub">Stored encrypted with the Android Keystore — never logged, never sent anywhere except your API.</string>
+    <string name="s_provider">Provider type</string>
+    <string name="s_max_tokens">Max tokens</string>
+    <string name="s_system_prompt">System prompt (instructions for the AI)</string>
+    <string name="save">Save settings</string>
+    <string name="test">Test connection</string>
+    <string name="saved">Settings saved</string>
+    <string name="free_hint">Free API options: Groq (console.groq.com), OpenRouter (openrouter.ai), Google AI Studio (aistudio.google.com). Paste the endpoint, model and key from their docs.</string>
+
+    <!-- Edit reply -->
+    <string name="edit_title">AI suggested reply</string>
+    <string name="edit_original_label">Message from</string>
+    <string name="edit_send">Send</string>
+    <string name="edit_copy">Copy</string>
+    <string name="edit_cancel">Cancel</string>
+    <string name="copied">Copied to clipboard</string>
+    <string name="sent_ok">Reply sent via WhatsApp</string>
+    <string name="send_failed">Could not send — open WhatsApp and reply manually</string>
+
+    <!-- Suggestions -->
+    <string name="sugg_channel">AI Reply Suggestions</string>
+    <string name="sugg_channel_desc">AI-generated reply suggestions for incoming messages</string>
+    <string name="status_channel">AI Reply Status</string>
+    <string name="sugg_title">AI reply suggestion</string>
+    <string name="sugg_for">Suggested reply to %1$s</string>
+    <string name="sugg_action_send">Send reply</string>
+    <string name="sugg_action_edit">Edit</string>
+    <string name="sugg_action_copy">Copy</string>
+    <string name="sugg_action_retry">Retry</string>
+    <string name="err_title">AI suggestion failed</string>
+    <string name="auto_sent_title">AI reply auto-sent</string>
+</resources>

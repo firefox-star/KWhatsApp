@@ -9,3 +9,10 @@
 .externalNativeBuild
 keystore/
 *.idsig
+
+# companion build artifacts
+companion/build/
+companion/app/build/
+companion/local.properties
+companion/.gradle/
+companion/build/

@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+
+android {
+    namespace 'com.aireply.companion'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.aireply.companion"
+        minSdk 23
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+// Zero external dependencies: pure android.* + org.json (bundled with the
+// platform). Keeps the APK tiny and the build reproducible.
+dependencies {
+}

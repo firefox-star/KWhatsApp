@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Material.NoActionBar">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".AiSettingsActivity"
+            android:exported="false"
+            android:label="@string/ai_settings"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".EditReplyActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Material.Dialog"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".LogActivity"
+            android:exported="false"
+            android:label="@string/debug_logs" />
+
+        <!-- Executes notification actions: Send (via WhatsApp's own reply
+             action), Copy, Retry. Never starts an activity directly, so it
+             is compatible with Android 12+ notification trampoline rules. -->
+        <receiver
+            android:name=".ReplyReceiver"
+            android:exported="false" />
+
+        <!-- The message analysis hook: reads incoming WhatsApp message
+             notifications, sends them to the user-configured AI API and
+             posts reply suggestions. -->
+        <service
+            android:name=".SuggestionListener"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>
