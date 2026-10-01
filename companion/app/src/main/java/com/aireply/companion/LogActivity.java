@@ -41,6 +41,7 @@ public class LogActivity extends Activity {
             @Override
             public void onClick(View v) {
                 AiLogger.clear();
+                CrashGuard.clear(LogActivity.this);
                 refresh();
             }
         });
@@ -55,8 +56,15 @@ public class LogActivity extends Activity {
     }
 
     private void refresh() {
-        String dump = AiLogger.dump();
-        tvLog.setText(dump);
+        StringBuilder sb = new StringBuilder();
+        sb.append(AiLogger.dump());
+        String crash = CrashGuard.readCrashLog(this);
+        if (crash.length() > 0) {
+            sb.append("\n===== LAST CRASH REPORT =====\n")
+              .append(crash)
+              .append("===== END OF CRASH REPORT =====\n");
+        }
+        tvLog.setText(sb.toString());
         scroll.post(new Runnable() {
             @Override
             public void run() {

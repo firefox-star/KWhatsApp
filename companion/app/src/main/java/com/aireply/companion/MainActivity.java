@@ -2,6 +2,7 @@ package com.aireply.companion;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.aireply.companion.ai.AiConfig;
 import com.aireply.companion.ai.AiEngine;
 import com.aireply.companion.ai.AiLogger;
+import com.aireply.companion.ai.ConvStore;
 
 /**
  * Dashboard: at-a-glance status (AI on/off, notification access, API
@@ -24,7 +26,7 @@ public class MainActivity extends Activity {
 
     private static final int REQ_POST_NOTIFICATIONS = 41;
 
-    private TextView tvAi, tvAccess, tvConfig, tvTestResult;
+    private TextView tvAi, tvAccess, tvConfig, tvTestResult, crashBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,14 @@ public class MainActivity extends Activity {
         tvAccess = findViewById(R.id.status_access);
         tvConfig = findViewById(R.id.status_config);
         tvTestResult = findViewById(R.id.test_result);
+        crashBanner = findViewById(R.id.crash_banner);
+
+        crashBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, LogActivity.class));
+            }
+        });
 
         findViewById(R.id.btn_settings).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +74,13 @@ public class MainActivity extends Activity {
             }
         });
 
+        findViewById(R.id.btn_fake).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                simulateIncoming();
+            }
+        });
+
         // Android 13+: our own suggestion notifications need POST_NOTIFICATIONS.
         if (Build.VERSION.SDK_INT >= 33
                 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
@@ -80,16 +97,24 @@ public class MainActivity extends Activity {
     }
 
     private void refreshStatus() {
-        tvAi.setText(AiConfig.isEnabled(this) ? R.string.on : R.string.off);
-        tvAi.setTextColor(AiConfig.isEnabled(this) ? 0xFF25D366 : 0xFFFF6B6B);
+        try {
+            tvAi.setText(AiConfig.isEnabled(this) ? R.string.on : R.string.off);
+            tvAi.setTextColor(AiConfig.isEnabled(this) ? 0xFF25D366 : 0xFFFF6B6B);
 
-        boolean access = hasNotificationAccess();
-        tvAccess.setText(access ? R.string.granted : R.string.not_granted);
-        tvAccess.setTextColor(access ? 0xFF25D366 : 0xFFFF6B6B);
+            boolean access = hasNotificationAccess();
+            tvAccess.setText(access ? R.string.granted : R.string.not_granted);
+            tvAccess.setTextColor(access ? 0xFF25D366 : 0xFFFF6B6B);
 
-        boolean configured = AiConfig.isConfigured(this);
-        tvConfig.setText(configured ? R.string.configured : R.string.not_configured);
-        tvConfig.setTextColor(configured ? 0xFF25D366 : 0xFFFF6B6B);
+            boolean configured = AiConfig.isConfigured(this);
+            tvConfig.setText(configured ? R.string.configured : R.string.not_configured);
+            tvConfig.setTextColor(configured ? 0xFF25D366 : 0xFFFF6B6B);
+
+            // Black box: surface the last recorded crash, if any.
+            crashBanner.setVisibility(CrashGuard.hasCrashLog(this)
+                    ? View.VISIBLE : View.GONE);
+        } catch (Throwable t) {
+            AiLogger.e(this, "refreshStatus failed", t);
+        }
     }
 
     private boolean hasNotificationAccess() {
@@ -126,5 +151,44 @@ public class MainActivity extends Activity {
                 });
             }
         }).start();
+    }
+
+    /**
+     * Full-pipeline test: feeds a fake message through the exact same path
+     * a real WhatsApp notification takes (ConvStore -> AiEngine ->
+     * SuggestionNotifier) and shows the resulting suggestion notification.
+     * If this works but real messages do not, the problem is notification
+     * access or WhatsApp's notification shape - not the AI pipeline.
+     */
+    private void simulateIncoming() {
+        final Context ctx = getApplicationContext();
+        if (!AiConfig.isEnabled(ctx)) {
+            tvTestResult.setVisibility(View.VISIBLE);
+            tvTestResult.setText("AI suggestions are Off - enable them in AI Settings first.");
+            return;
+        }
+        if (!AiConfig.isConfigured(ctx)) {
+            tvTestResult.setVisibility(View.VISIBLE);
+            tvTestResult.setText("No API configured - add Base URL + key in AI Settings first.");
+            return;
+        }
+        Toast.makeText(this, "Sending a test message through the AI pipeline",
+                Toast.LENGTH_SHORT).show();
+        final String convKey = "test|Test Chat";
+        final String title = "Test Chat";
+        final String body = "Hey! Are we still on for tomorrow?";
+        ConvStore.onIncoming(convKey, body);
+        AiEngine.suggest(ctx, convKey, body, new AiEngine.Callback() {
+            @Override
+            public void onSuggestions(String k, java.util.List<String> suggestions) {
+                SuggestionNotifier.showSuggestions(ctx, convKey, title, body, suggestions, false);
+            }
+
+            @Override
+            public void onError(String k, String userMessage) {
+                SuggestionNotifier.showSuggestions(ctx, convKey, title, body,
+                        java.util.Collections.singletonList(userMessage), true);
+            }
+        });
     }
 }

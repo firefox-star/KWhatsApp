@@ -121,6 +121,18 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/crash_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@color/surface2"
+            android:padding="12dp"
+            android:text="@string/crash_banner"
+            android:textColor="@color/text_sub"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/btn_settings"
             android:layout_width="match_parent"
             android:layout_height="52dp"
@@ -151,6 +163,17 @@
             android:background="@color/surface2"
             android:gravity="center"
             android:text="@string/test_ai"
+            android:textColor="@color/text_main"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/btn_fake"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/surface2"
+            android:gravity="center"
+            android:text="@string/btn_fake"
             android:textColor="@color/text_main"
             android:textSize="16sp" />
 
