@@ -96,6 +96,12 @@ public class ActionP extends Preference {
                     Toast.makeText(getContext(), "No Logs There!", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case "ai_logs":
+                showAiLogs();
+                break;
+            case "ai_test":
+                new AiTestTask(getContext()).execute((String[]) new String[0]);
+                break;
             case "credits":
                 AlertDialog.Builder alertDialog;
                 alertDialog = new AlertDialog.Builder(getContext());
@@ -126,6 +132,55 @@ public class ActionP extends Preference {
                 });
                 ab.show();
                 break;
+        }
+    }
+
+    /** Scrollable monospace viewer for the AI debug log ring buffer. */
+    private void showAiLogs() {
+        android.app.AlertDialog.Builder ab = new android.app.AlertDialog.Builder(getContext());
+        ab.setTitle("AI Debug Logs (tag: AiMods)");
+        android.widget.TextView tv = new android.widget.TextView(getContext());
+        tv.setText(kmods.ai.AiLogger.dump());
+        tv.setTextIsSelectable(true);
+        tv.setTypeface(android.graphics.Typeface.MONOSPACE);
+        tv.setTextSize(11);
+        int pad = (int) (16 * getContext().getResources().getDisplayMetrics().density);
+        android.widget.ScrollView sv = new android.widget.ScrollView(getContext());
+        sv.addView(tv);
+        sv.setPadding(pad, pad / 2, pad, 0);
+        ab.setView(sv);
+        ab.setNeutralButton("Clear", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                kmods.ai.AiLogger.clear();
+                Toast.makeText(getContext(), "AI logs cleared", Toast.LENGTH_SHORT).show();
+            }
+        });
+        ab.setPositiveButton("OK", null);
+        ab.show();
+    }
+
+    /** Runs one real request against the configured API and reports the result. */
+    private static class AiTestTask extends android.os.AsyncTask<String, Void, String> {
+        private final Context ctx;
+        AiTestTask(Context ctx) {
+            this.ctx = ctx.getApplicationContext();
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                return kmods.ai.AiEngine.testConnectionSync(ctx);
+            } catch (Throwable t) {
+                return "FAILED: " + t.getClass().getSimpleName();
+            }
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                boolean ok = result != null && result.startsWith("Connected");
+                Toast.makeText(ctx, result, ok ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
+            } catch (Throwable ignored) {
+            }
         }
     }
 }

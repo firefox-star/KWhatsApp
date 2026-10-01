@@ -7,6 +7,19 @@
     <Preference android:title="KWhatsApp v2.6" android:summary="Base v2.17.87" />
     <kmods.ActionP android:title="Changelog" android:key="clogs" android:summary="ChangesLog Of KWhatsApp" />
     <kmods.ActionP android:title="Special Thanks To" android:key="credits" android:summary="Credits" />
+    <PreferenceCategory android:title="AI Mods" android:key="cat_ai">
+        <SwitchPreference android:title="Enable AI Features" android:key="ai_enabled" android:summary="Master switch for all AI features (smart replies, analysis)" android:defaultValue="false" />
+        <SwitchPreference android:title="Auto Suggest Replies" android:key="ai_auto_suggest" android:summary="Analyze incoming messages and show reply suggestions automatically" android:dependency="ai_enabled" android:defaultValue="true" />
+        <EditTextPreference android:title="AI API Base URL" android:key="ai_base_url" android:summary="Your own endpoint, e.g. https://api.groq.com/openai/v1" android:dependency="ai_enabled" android:hint="https://your-api.example.com/v1" />
+        <EditTextPreference android:title="AI Model Name" android:key="ai_model" android:summary="Model the API should use, e.g. llama-3.1-8b-instant" android:dependency="ai_enabled" android:hint="model-name" />
+        <kmods.ai.ApiKeyPreference android:title="API Key / Auth Token" android:key="ai_api_key" android:summary="Paste your API key (stored encrypted)" android:dependency="ai_enabled" />
+        <ListPreference android:title="AI Provider Type" android:key="ai_provider" android:entries="@array/ai_provider_names" android:entryValues="@array/ai_provider_values" android:defaultValue="auto" android:summary="How to talk to your endpoint" android:dependency="ai_enabled" />
+        <EditTextPreference android:title="AI Instructions (System Prompt)" android:key="ai_system_prompt" android:summary="Optional custom persona/instructions for the reply assistant" android:dependency="ai_enabled" />
+        <EditTextPreference android:title="Max Reply Tokens" android:key="ai_max_tokens" android:summary="Upper bound for each completion (default 200)" android:dependency="ai_enabled" />
+        <kmods.ActionP android:title="Test AI Connection" android:key="ai_test" android:summary="Verify URL, key and model with one real request" android:dependency="ai_enabled" />
+        <SwitchPreference android:title="AI Debug Logging" android:key="ai_debug_log" android:summary="Record AI request/response details for troubleshooting (tag: AiMods)" android:dependency="ai_enabled" android:defaultValue="false" />
+        <kmods.ActionP android:title="View AI Debug Logs" android:key="ai_logs" android:summary="Show recent AI activity and errors" android:dependency="ai_enabled" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="Globle Whatsapp" android:key="cat_wa">
         <SwitchPreference android:title="@string/HideDate" android:key="hideinfo" android:summary="@string/HideDateSum" android:defaultValue="false" />
         <SwitchPreference android:title="@string/TxtSelect" android:key="txt_select" android:summary="@string/TxtSelectSum" android:defaultValue="false" />

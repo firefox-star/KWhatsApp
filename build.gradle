@@ -1,20 +1,24 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// Top-level build file.
+// MODERNIZED 2026: the original toolchain (Gradle 2.14.1 / AGP 2.2.3 / jcenter
+// / 32-bit build-tools 25) is no longer downloadable or runnable on current
+// machines. This project now builds with AGP 8.5.2 + Gradle 8.13 + JDK 17/21.
+// The mod output is unchanged: compile, then decompile the APK and merge the
+// smali/resources into the WhatsApp base (see README / tools/AiMod/README.md).
 
 buildscript {
     repositories {
-        jcenter()
+        google()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.android.tools.build:gradle:8.5.2'
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
+        google()
+        mavenCentral()
     }
 }
 

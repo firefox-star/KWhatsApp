@@ -1,5 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kmods.res">
+<!-- Namespace is declared as `namespace 'kmods.res'` in app/build.gradle (AGP 8+).
+     This container APK only ships the mod's smali/resources for the merge workflow. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"

@@ -19,6 +19,7 @@ public class Settings extends np implements Preference.OnPreferenceClickListener
         this.addPreferencesFromResource(getResID("settings", "xml"));
         this.findPreference("rest").setOnPreferenceClickListener(this);
         this.findPreference("cshort").setOnPreferenceClickListener(this);
+        kmods.ai.AiSettingsUi.register(this);
     }
     @Override
     public boolean onPreferenceClick(Preference preference) {

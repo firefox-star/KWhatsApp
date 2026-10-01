@@ -91,6 +91,10 @@ public class Utils {
     public static void SetDB(final SQLiteOpenHelper sql) {
         Utils.sql = sql;
     }
+    /** Exposes WhatsApp's messages DB helper to the AI mod (may be null until SetDB runs). */
+    public static SQLiteOpenHelper db() {
+        return Utils.sql;
+    }
     public static LinkedHashMap GetGroupMsgs(final String s) {
         final LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<String, Integer>();
         final Cursor rawQuery = Utils.sql.getReadableDatabase().rawQuery("SELECT remote_resource, count(remote_resource) as total FROM messages WHERE key_remote_jid=\"" + s + "\" AND remote_resource!=\"\" GROUP BY remote_resource UNION SELECT remote_resource, count(key_from_me) as total FROM messages WHERE key_remote_jid=\"" + s + "\" AND key_from_me=1 And receipt_server_timestamp!=-1 GROUP BY remote_resource ORDER BY total DESC", null);
@@ -222,8 +226,7 @@ public class Utils {
     //online toast
     public static void OnlineToast(String s){
         if(getBoolean("contact_online_toast")) {
-            kmods.plus.Utils.checkContactOnline(App.n(), s, App.R.jabber_id);
-            //checkContactOnline(App.n(), s, App.R.jabber_id);
+            checkContactOnline(App.n(), s, App.R.jabber_id);
         }
     }
     //Exo Init
@@ -328,6 +331,14 @@ public class Utils {
     }
     static int getResID(String name, String type){
         return ctx.getResources().getIdentifier(name, type, ctx.getPackageName());
+    }
+    /** Public accessor for other kmods.* packages (e.g. kmods.ai). */
+    public static int resID(String name, String type) {
+        return getResID(name, type);
+    }
+    /** Public accessor for the mod version (e.g. "2.6"). */
+    public static String modVersion() {
+        return ver;
     }
     private static void checkContactOnline(final Context ctxt,final String s, final String s2) {
         try {

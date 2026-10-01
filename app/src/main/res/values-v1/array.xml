@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="ai_provider_names">
+        <item>Auto-detect from URL</item>
+        <item>OpenAI-compatible (/chat/completions)</item>
+        <item>Google Gemini (generateContent)</item>
+    </string-array>
+    <string-array name="ai_provider_values">
+        <item>auto</item>
+        <item>openai</item>
+        <item>gemini</item>
+    </string-array>
     <string-array name="mute_time">
         <item>8 Hours</item>
         <item>1 Week</item>
@@ -12,16 +22,16 @@
         <item>525949</item>
         <item>52416000</item>
     </integer-array>
-	<string-array name="bubble_n">
-        <item>Stock</item>		
+        <string-array name="bubble_n">
+        <item>Stock</item>              
     </string-array>
     <string-array name="bubble_v">
-        <item>stock</item>		
+        <item>stock</item>              
     </string-array>
     <string-array name="tick_n">
-	    <item>Stock</item>		
+            <item>Stock</item>          
     </string-array>
     <string-array name="tick_v">
-		<item>stock</item>		
+                <item>stock</item>              
     </string-array>
 </resources>

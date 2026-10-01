@@ -1,24 +1,36 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    namespace 'kmods.res'
+    compileSdk 34
+
     defaultConfig {
         applicationId "kmods.res"
-        minSdkVersion 15
+        // minSdk raised 15 -> 19 purely for the container build (AGP 8 floor).
+        // Irrelevant at runtime: only smali/resources are merged into the
+        // WhatsApp base APK, which keeps its own manifest.
+        minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.7-AI"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    // WhatsApp classes (com.whatsapp.*, android.support.v7.*, np) come from the
+    // provided jar at compile time and exist in the merged app at runtime.
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
-    provided files('libs/whatsapp-dex2jar.jar')
-    compile files('libs/fabric.jar')
+    compileOnly files('libs/whatsapp-dex2jar.jar')
+    // fabric.jar is unused by current sources; kept out of the build.
 }
